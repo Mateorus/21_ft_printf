@@ -1,18 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   ft_isascii.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/16 19:43:11 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/01/16 19:45:00 by gstiedem         ###   ########.fr       */
+/*   Created: 2018/11/26 16:23:11 by gstiedem          #+#    #+#             */
+/*   Updated: 2018/11/26 16:25:28 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
+#include "libft.h"
 
-int	ft_printf(const char *format, ...);
-
-#endif
+int	ft_isascii(int c)
+{
+	if (c >= 0 && c <= 127)
+		return (1);
+	return (0);
+}

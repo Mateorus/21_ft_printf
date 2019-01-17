@@ -1,21 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/16 17:44:22 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/01/16 21:38:52 by gstiedem         ###   ########.fr       */
+/*   Created: 2018/11/24 19:33:17 by gstiedem          #+#    #+#             */
+/*   Updated: 2018/11/29 15:39:16 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdarg.h>
-#include "ft_printf.h"
+#include "libft.h"
+#include <stdlib.h>
 
-int	ft_printf(const char *format, ...)
+char	*ft_strdup(const char *s1)
 {
-	va_list	ap;
+	size_t	len;
+	char	*p;
 
-	va_start(ap, format);
+	len = ft_strlen(s1);
+	if (!(p = (char*)malloc(sizeof(*p) * (len + 1))))
+		return (NULL);
+	p = ft_memcpy(p, s1, len);
+	*(p + len) = 0;
+	return (p);
 }
