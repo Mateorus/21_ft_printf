@@ -1,22 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/17 22:27:15 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/01/21 18:15:13 by gstiedem         ###   ########.fr       */
+/*   Created: 2018/11/20 20:51:57 by gstiedem          #+#    #+#             */
+/*   Updated: 2019/01/21 23:42:05 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	main(void)
+void	ft_bzero(void *s, size_t n)
 {
-	char	c = 'C';
-	int		total;
-
-	total = ft_printf("My %c\n", c);
-	return (total);
+	while (n--)
+		*(char*)s++ = 0;
 }

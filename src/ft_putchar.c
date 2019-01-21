@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_putchar.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/17 22:27:15 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/01/21 18:15:13 by gstiedem         ###   ########.fr       */
+/*   Created: 2018/11/30 20:05:38 by gstiedem          #+#    #+#             */
+/*   Updated: 2019/01/21 23:34:08 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
 #include "ft_printf.h"
 
-int	main(void)
+int	ft_putchar(t_opt *opt, va_list ap)
 {
-	char	c = 'C';
-	int		total;
+	int	c;
 
-	total = ft_printf("My %c\n", c);
-	return (total);
+	c = va_arg(ap, int);
+	return (write(1, &c, 1));
 }

@@ -1,22 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   parse_flags.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/17 22:27:15 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/01/21 18:15:13 by gstiedem         ###   ########.fr       */
+/*   Created: 2019/01/21 15:17:35 by gstiedem          #+#    #+#             */
+/*   Updated: 2019/01/21 23:44:21 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	main(void)
+int	parse_flags(const char *format, t_opt *opt)
 {
-	char	c = 'C';
-	int		total;
-
-	total = ft_printf("My %c\n", c);
-	return (total);
+	ft_bzero(opt, sizeof(*opt));
+	if (*format == 'c')
+		opt->type = c;
+	return (2);
 }
