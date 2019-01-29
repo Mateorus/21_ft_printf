@@ -6,7 +6,7 @@
 #    By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/17 19:13:48 by gstiedem          #+#    #+#              #
-#    Updated: 2019/01/21 23:23:35 by gstiedem         ###   ########.fr        #
+#    Updated: 2019/01/29 16:49:23 by gstiedem         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,8 @@ OBJDIR:=obj
 LIBDIR:=libft
 INCLUDE:=include
 SRC:=$(addprefix $(SRCDIR)/,\
-	ft_printf.c ft_vfprintf.c ft_putchar.c parse_flags.c ft_bzero.c)
+	ft_printf.c ft_vfprintf.c ft_putchar.c ft_bzero.c parser.c get_arg.c\
+	skip.c ft_putstr.c ft_strlen.c ft_putnbr.c ft_putunbr.c)
 OBJ:=$(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRC))
 CC:=gcc
 CFLAGS:=-Wall -Wextra -Werror

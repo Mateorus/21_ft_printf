@@ -1,32 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_vfprintf.c                                      :+:      :+:    :+:   */
+/*   skip.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/21 12:11:12 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/01/29 16:48:29 by gstiedem         ###   ########.fr       */
+/*   Created: 2019/01/26 16:45:33 by gstiedem          #+#    #+#             */
+/*   Updated: 2019/01/26 17:07:27 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_vfprintf(int fd, char *format, va_list ap)
+void	skip(int fd, t_opt *opt, int *total)
 {
-	int			total;
-	t_opt		opt;
-	t_fp		*fp;
-
-	fp = (t_fp[NUM_OF_FUNC]){skip, ft_putchar, ft_putstr, ft_putnbr,
-		ft_putunbr};
-	total = 0;
-	while (*format && total != -1)
-	{
-		if (*format == '%')
-			fp[parser(&format, &opt, ap)](fd, &opt, &total);
-		else
-			((write(fd, format++, 1)) == -1) ? (total = -1) : total++;
-	}
-	return (total);
+	(void)fd;
+	(void)opt;
+	(void)total;
 }

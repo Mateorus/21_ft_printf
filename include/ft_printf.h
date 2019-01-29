@@ -6,7 +6,7 @@
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 19:43:11 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/01/21 23:41:37 by gstiedem         ###   ########.fr       */
+/*   Updated: 2019/01/29 17:04:47 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-enum				e_arg_type{c, s, d, i = 2, u = 2, };
+#define NUM_OF_TYPES	22
+#define NUM_OF_FUNC		5
+#define BUF				30
+
 typedef struct		s_flags
 {
 	uint8_t			minus;
@@ -32,16 +35,24 @@ typedef struct		s_opt
 {
 	uint8_t			parameter;
 	t_flags			flags;
-	uint8_t			width;
-	uint8_t			precision;
-	enum e_arg_type	type;
+	int				width;
+	int				precision;
+	uint8_t			length;
+	char			type;
+	uint64_t		arg;
 }					t_opt;
-typedef int			(*t_fp)(t_opt*, va_list);
+typedef void		(*t_fp)(int, t_opt*, int*);
 
 int					ft_printf(const char *format, ...);
-int					ft_vfprintf(int fd, const char *format, va_list ap);
-int					parse_flags(const char *format, t_opt *opt);
-int					ft_putchar(t_opt *opt, va_list ap);
+int					ft_vfprintf(int fd, char *format, va_list ap);
 void				ft_bzero(void *s, size_t n);
+int					parser(char **format, t_opt *opt, va_list ap);
+int					get_arg(char **format, t_opt *opt, va_list ap);
+void				skip(int fd, t_opt *opt, int *total);
+void				ft_putchar(int fd, t_opt *opt, int *total);
+void				ft_putstr(int fd, t_opt *opt, int *total);
+size_t				ft_strlen(const char *s);
+void				ft_putnbr(int fd, t_opt *opt, int *total);
+void				ft_putunbr(int f, t_opt *opt, int *total);
 
 #endif

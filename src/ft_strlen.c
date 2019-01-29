@@ -1,32 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_vfprintf.c                                      :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/21 12:11:12 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/01/29 16:48:29 by gstiedem         ###   ########.fr       */
+/*   Created: 2018/11/24 19:31:19 by gstiedem          #+#    #+#             */
+/*   Updated: 2019/01/27 14:20:32 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_vfprintf(int fd, char *format, va_list ap)
+size_t	ft_strlen(const char *s)
 {
-	int			total;
-	t_opt		opt;
-	t_fp		*fp;
+	size_t len;
 
-	fp = (t_fp[NUM_OF_FUNC]){skip, ft_putchar, ft_putstr, ft_putnbr,
-		ft_putunbr};
-	total = 0;
-	while (*format && total != -1)
-	{
-		if (*format == '%')
-			fp[parser(&format, &opt, ap)](fd, &opt, &total);
-		else
-			((write(fd, format++, 1)) == -1) ? (total = -1) : total++;
-	}
-	return (total);
+	len = 0;
+	while (*s++)
+		len++;
+	return (len);
 }

@@ -6,7 +6,7 @@
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 17:44:22 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/01/21 19:17:11 by gstiedem         ###   ########.fr       */
+/*   Updated: 2019/01/26 16:16:05 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	ft_printf(const char *format, ...)
 	if (!format)
 		return (-1);
 	va_start(ap, format);
-	total = ft_vfprintf(1, format, ap);
+	total = ft_vfprintf(1, (char*)format, ap);
 	va_end(ap);
 	return (total);
 }
