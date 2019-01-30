@@ -6,7 +6,7 @@
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 19:43:11 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/01/29 17:04:47 by gstiedem         ###   ########.fr       */
+/*   Updated: 2019/01/29 22:17:20 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #include <stdlib.h>
 
 #define NUM_OF_TYPES	22
-#define NUM_OF_FUNC		5
+#define NUM_OF_FUNC		7
 #define BUF				30
 
 typedef struct		s_flags
@@ -54,5 +54,7 @@ void				ft_putstr(int fd, t_opt *opt, int *total);
 size_t				ft_strlen(const char *s);
 void				ft_putnbr(int fd, t_opt *opt, int *total);
 void				ft_putunbr(int f, t_opt *opt, int *total);
+void				ft_putnbr_base16(int f, t_opt *opt, int *total);
+void				ft_putnbr_base8(int f, t_opt *opt, int *total);
 
 #endif

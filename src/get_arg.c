@@ -6,7 +6,7 @@
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 14:28:35 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/01/29 18:49:20 by gstiedem         ###   ########.fr       */
+/*   Updated: 2019/01/29 23:27:04 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ int		pick_func(char type)
 	type == 's' ? i = 2 : 0;
 	(type == 'd' || type == 'i') ? i = 3 : 0;
 	type == 'u' || type == 'U' ? i = 4 : 0;
-	(type == 'x' || type == 'X') ? i = 3 : 0;
+	(type == 'x' || type == 'X') ? i = 5 : 0;
+	type == 'o' ? i = 6 : 0;
 	return (i);
 }
 
@@ -57,6 +58,22 @@ void	cast_to(t_opt *opt)
 {
 	if (opt->type == 's')
 		return ;
+	if (opt->type == 'U')
+	{
+		opt->arg = (unsigned long)opt->arg;
+		return ;
+	}
+	if (opt->type == 'u' || opt->type == 'X' || opt->type == 'x' || opt->type == 'o')
+	{
+		opt->length == 0 ? opt->arg = (unsigned int)opt->arg : 0;
+		opt->length == 1 ? opt->arg = (unsigned char)opt->arg : 0;
+		opt->length == 2 ? opt->arg = (unsigned short)opt->arg : 0;
+		opt->length == 3 ? opt->arg = (unsigned long long)opt->arg : 0;
+		opt->length == 4 ? opt->arg = (unsigned long)opt->arg : 0;
+		opt->length == 6 ? opt->arg = (size_t)opt->arg : 0;
+		opt->length == 7 ? opt->arg = (uintmax_t)opt->arg : 0;
+		return ;
+	}
 	opt->length == 0 ? opt->arg = (int)opt->arg : 0;
 	opt->length == 1 ? opt->arg = (char)opt->arg : 0;
 	opt->length == 2 ? opt->arg = (short)opt->arg : 0;
@@ -65,9 +82,6 @@ void	cast_to(t_opt *opt)
 	opt->length == 5 ? opt->arg = (long double)opt->arg : 0;
 	opt->length == 6 ? opt->arg = (size_t)opt->arg : 0;
 	opt->length == 7 ? opt->arg = (intmax_t)opt->arg : 0;
-	if (opt->type == 'u' || opt->type == 'U' || opt->type == 'X' ||
-		opt->type == 'x' || opt->type == 'o')
-		opt->arg = (unsigned)opt->arg;
 }
 
 int		get_arg(char **format, t_opt *opt, va_list ap)
