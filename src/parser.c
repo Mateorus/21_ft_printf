@@ -6,7 +6,7 @@
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/24 00:07:10 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/01/29 23:29:11 by gstiedem         ###   ########.fr       */
+/*   Updated: 2019/02/08 23:19:24 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ void	get_flags(char **format, t_opt *opt)
 			opt->flags.hash = 1;
 		s++;
 	}
+	opt->flags.minus ? opt->flags.zero = 0 : 0;
+	opt->flags.plus ? opt->flags.space = 0 : 0;
 	(*format) += (s - (*format));
 }
 
@@ -59,15 +61,19 @@ void	get_width(char **format, t_opt *opt, va_list ap)
 	int		width;
 
 	s = *format;
-	if (*s == '*')
-	{
-		opt->width = va_arg(ap, int);
-		(*format)++;
-		return ;
-	}
 	width = 0.0;
-	while (*s >= '0' && *s <= '9')
+	while ((*s >= '0' && *s <= '9') || *s == '*')
 	{
+		if (*s == '*')
+		{
+			if ((width = va_arg(ap, int)) < 0)
+			{
+				width *= -1;
+				opt->flags.minus = 1;
+			}
+			s++;
+			break ;
+		}
 		width *= 10;
 		width += *s++ - '0';
 	}
@@ -108,8 +114,8 @@ int		parser(char **format, t_opt *opt, va_list ap)
 	int		i;
 
 	(*format)++;
-	copy = *format;
 	ft_bzero(opt, sizeof(*opt));
+	copy = *format;
 	get_parameter(&copy, opt);
 	get_flags(&copy, opt);
 	get_width(&copy, opt, ap);

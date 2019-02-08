@@ -1,28 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   ft_fprintf.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/16 17:44:22 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/02/08 23:54:03 by gstiedem         ###   ########.fr       */
+/*   Created: 2019/02/06 17:15:34 by gstiedem          #+#    #+#             */
+/*   Updated: 2019/02/06 17:40:04 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_printf(const char *format, ...)
+int	ft_fprintf(int fd, const char *format, ...)
 {
 	va_list		ap;
 	int			total;
-	char		*copy;
 
 	if (!format)
 		return (-1);
-	copy = (char*)format;
 	va_start(ap, format);
-	total = ft_vfprintf(1, copy, ap);
+	total = ft_vfprintf(fd, (char*)format, ap);
 	va_end(ap);
 	return (total);
 }

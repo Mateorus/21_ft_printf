@@ -1,23 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/24 19:31:19 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/01/27 14:20:32 by gstiedem         ###   ########.fr       */
+/*   Created: 2019/02/01 12:18:15 by gstiedem          #+#    #+#             */
+/*   Updated: 2019/02/03 00:51:27 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
-
-size_t	ft_strlen(const char *s)
+char	*ft_strchr(char *s, char c)
 {
-	size_t len;
-
-	len = 0;
-	while (*s++)
-		len++;
-	return (len);
+	while (*s)
+	{
+		if (*s == c)
+			return (s);
+		s++;
+	}
+	return (0);
 }

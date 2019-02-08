@@ -6,16 +6,16 @@
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/27 18:32:46 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/01/29 14:53:24 by gstiedem         ###   ########.fr       */
+/*   Updated: 2019/02/07 15:44:53 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static void	itoa(char *buf, uint64_t num, int precision)
+static void	itoa(char *buf, intmax_t num, int precision)
 {
-	int64_t	tmp;
-	int		i;
+	intmax_t	tmp;
+	int			i;
 
 	!num ? buf[0] = '0' : 0;
 	!num && !precision ? buf[0] = 0 : 0;
@@ -23,8 +23,9 @@ static void	itoa(char *buf, uint64_t num, int precision)
 	tmp = num;
 	while (tmp /= 10)
 		i++;
+	buf[i] = 0;
 	tmp = num;
-	if ((uint64_t)tmp == -9223372036854775808U)
+	if ((uintmax_t)tmp == -9223372036854775808U)
 	{
 		buf[--i] = '8';
 		tmp /= 10;
@@ -38,64 +39,64 @@ static void	itoa(char *buf, uint64_t num, int precision)
 	}
 }
 
-static void	padding(int fd, t_opt *opt, int *total, int len)
+static void	padding(t_opt *opt, char **res, int slen)
 {
-	int 	width;
-	int64_t	num;
-	char	c[1];
+	int 		pad;
+	intmax_t	num;
+	char		c;
+	char		*tmp;
 
-	c[0] = ' ';
 	num = opt->arg;
-	width = opt->width;
-	(opt->precision > len) ? (width -= opt->precision) : (width -= len);
-	if (opt->flags.space && !opt->flags.plus && num >= 0)
-		width--;
-	if (opt->flags.plus && num >= 0)
-		width--;
-	if (num < 0)
-		width--;
-	if (opt->flags.zero && !opt->flags.minus && opt->precision < 0)
-		c[0] = '0';
-	while (width-- > 0)
-		(write(fd, c, 1) != -1) ? (*total)++ : (*total = -1);
+	pad = opt->width - slen;
+	tmp = *res;
+	if (opt->flags.space && num >= 0)
+		*(*res)++ = ' ';
+	if (opt->flags.plus && opt->arg >= 0 && opt->flags.zero)
+		*(*res)++ = '+';
+	if (opt->arg < 0 && opt->flags.zero)
+		*(*res)++ = '-';
+	if (pad < 1)
+		return ;
+	opt->flags.minus ? tmp = tmp + slen : (tmp = (*res));
+	opt->flags.zero && opt->precision == -1 ? (c = '0') : (c = ' ');
+	opt->flags.minus ? 0 : (*res += pad);
+	while (pad-- > 0)
+		*tmp++ = c;
 }
 
-static void	prepend(int fd, t_opt *opt, int *total, int len)
+static void	prepend(t_opt *opt, char **res, int nlen)
 {
-	int64_t	num;
-	int		dif;
+	int			dif;
+	intmax_t	num;
 
 	num = opt->arg;
-	dif = opt->precision - len;
-	if (opt->flags.space && !opt->flags.plus && num >= 0)
-		(write(fd, " ", 1) != -1) ? (*total)++ : (*total = -1);
+	dif = opt->precision - nlen;
 	if (num >= 0 && !opt->flags.zero && opt->flags.plus)
-		(write(fd, "+", 1) != -1) ? (*total)++ : (*total = -1);
+		*(*res)++ = '+';
 	if (num < 0 && !opt->flags.zero)
-		(write(fd, "-", 1) != -1) ? (*total)++ : (*total = -1);
+		*(*res)++ = '-';
 	while(dif-- > 0)
-		(write(fd, "0", 1) != -1) ? (*total)++ : (*total = -1);
+		*(*res)++ = '0';
 }
 
-void		ft_putnbr(int fd, t_opt *opt, int *total)
+int			ft_putnbr(char **res, int res_len, t_opt *opt)
 {
-	char	buf[BUF];
-	int		i;
 	int		len;
-	int64_t	num;
+	int		nlen;
+	int		slen;
+	char	*tmp;
+	char	buf[BUF];
 
-	num = opt->arg;
-	ft_bzero(buf, BUF);
 	itoa(buf, opt->arg, opt->precision);
-	len = ft_strlen(buf);
-	if (opt->flags.plus && num >= 0 && opt->flags.zero)
-		(write(fd, "+", 1) != -1) ? (*total)++ : (*total = -1);
-	if (num < 0 && opt->flags.zero)
-		(write(fd, "-", 1) != -1) ? (*total)++ : (*total = -1);
-	(opt->width &&!opt->flags.minus) ? padding(fd, opt, total, len) : 0;
-	prepend(fd, opt, total, len);
-	i = -1;
-	while (buf[++i])
-		(write(fd, &buf[i], 1) != -1) ? (*total)++ : (*total = -1);
-	(opt->width && opt->flags.minus) ? padding(fd, opt, total, len) : 0;
+	nlen = ft_strlen(buf);
+	opt->precision != -1 ? opt->flags.zero = 0 : 0;
+	(opt->precision > nlen && nlen) ? (slen = opt->precision) : (slen = nlen);
+	(opt->flags.space || opt->flags.plus || opt->arg < 0) ? slen++ : 0;
+	opt->width > slen ? (len = opt->width) : (len = slen);
+	len = ft_strncat(res, 0, res_len, len);
+	tmp = (*res) + res_len;
+	padding(opt, &tmp, slen);
+	prepend(opt, &tmp, nlen);
+	ft_strncpy(tmp, buf, nlen);
+	return (len);
 }

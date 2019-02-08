@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr_base16.c                                 :+:      :+:    :+:   */
+/*   ft_putnbr_base2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/29 20:27:15 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/02/07 18:00:38 by gstiedem         ###   ########.fr       */
+/*   Updated: 2019/02/08 23:25:12 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,28 +15,23 @@
 static void	itoa(char *buf, t_opt *opt)
 {
 	int			i;
-	char		x;
 	uintmax_t	tmp;
 	uintmax_t	num;
 
-	opt->type == 'X' ? (x = 'A') : (x = 'a');
 	num = opt->arg;
 	!num ? buf[0] = '0' : 0;
 	!num && !opt->precision ? buf[0] = 0 : 0;
 	i = 1;
 	tmp = num;
-	while (tmp >>= 4)
+	while (tmp >>= 1)
 		i++;
 	buf[i] = 0;
 	while (num)
 	{
-		tmp  = 0xF & num;
-		if (tmp > 9)
-			tmp = tmp - 10 + x;
-		else
-			tmp = tmp + '0';
+		tmp  = 0x1 & num;
+		tmp = tmp + '0';
 		buf[--i] = tmp;
-		num >>= 4;
+		num >>= 1;
 	}
 }
 
@@ -44,7 +39,8 @@ static void sufix(t_opt *opt, char **res)
 {
 	char		*pr;
 
-	opt->type == 'X' ? (pr = (char[2]){'0', 'X'}) : (pr = (char[2]){'0', 'x'});
+	(void)opt;
+	pr = (char[2]){'0', 'b'};
 	ft_strncpy(*res, pr, 2);
 	(*res) += 2;
 }
@@ -57,7 +53,7 @@ static void	padding(t_opt *opt, char **res, int slen)
 
 	pad = opt->width - slen;
 	tmp = *res;
-	if (opt->flags.hash && opt->flags.zero && (opt->arg || opt->type == 'p'))
+	if (opt->flags.hash && opt->flags.zero && opt->arg)
 		sufix(opt, res);
 	if (pad < 1)
 		return ;
@@ -73,13 +69,13 @@ static void	prepend(t_opt *opt, char **res, int nlen)
 	int		dif;
 
 	dif = opt->precision - nlen;
-	if (opt->flags.hash && !opt->flags.zero && (opt->arg || opt->type == 'p'))
+	if (opt->flags.hash && !opt->flags.zero && opt->arg)
 		sufix(opt, res);
 	while(dif-- > 0)
 		*(*res)++ = '0';
 }
 
-int			ft_putnbr_base16(char **res, int res_len, t_opt *opt)
+int			ft_putnbr_base2(char **res, int res_len, t_opt *opt)
 {
 	int			len;
 	int			slen;

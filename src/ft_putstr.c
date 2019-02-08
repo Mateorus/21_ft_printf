@@ -6,41 +6,46 @@
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 17:04:08 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/01/29 23:05:54 by gstiedem         ###   ########.fr       */
+/*   Updated: 2019/02/07 15:31:16 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static void	padding(int fd, t_opt *opt, int	*total)
+static void	padding(t_opt *opt,char **res, int slen)
 {
-	int	width;
-	int	len;
+	int		pad;
+	char	c;
+	char	*tmp;
 
-	len = ft_strlen((char*)opt->arg);
-	if ((opt->precision > len || !len) || opt->precision == -1)
-		width = opt->width - len;
-	else
-		width = opt->width - opt->precision;
-	while (width-- > 0)
-		(write(fd, " ", 1) != -1) ? (*total)++ : (*total = -1);
+	 pad = opt->width - slen;
+	 tmp = *res;
+	 if (pad < 1)
+		return ;
+	 opt->flags.minus ? tmp = tmp + slen : (tmp = (*res));
+	 opt->flags.zero ? (c = '0') : (c = ' ');
+	 opt->flags.minus ? 0 : (*res += pad);
+	 while (pad-- > 0)
+		 *tmp++ = c;
 }
 
-void		ft_putstr(int fd, t_opt *opt, int *total)
+int			ft_putstr(char **res, int res_len, t_opt *opt)
 {
 	char	*s;
-	int		precision;
+	char	*tmp;
+	int		len;
+	int		slen;
 
-	precision = opt->precision;
 	s = "(null)";
 	if (!opt->arg)
-		opt->arg = (uint64_t)s;
+		opt->arg = (uintmax_t)s;
 	s = (char*)opt->arg;
-	(opt->width && !opt->flags.minus) ? padding(fd, opt, total) : 0;
-	while(*s && *total != -1 && precision--)
-	{
-		(write(fd, s, 1) != -1) ? (*total)++ : (*total = -1);
-		s++;
-	}
-	(opt->width && opt->flags.minus) ? padding(fd, opt, total) : 0;
+	slen = ft_strlen(s);
+	(opt->precision >= 0 && opt->precision < slen) ? (slen = opt->precision) : 0;
+	opt->width > slen ? (len = opt->width) : (len = slen);
+	len = ft_strncat(res, 0, res_len, len);
+	tmp = (*res) + res_len;
+	padding(opt, &tmp, slen);
+	ft_strncpy(tmp, s, slen);
+	return (len);
 }

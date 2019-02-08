@@ -6,15 +6,15 @@
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 16:45:33 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/01/26 17:07:27 by gstiedem         ###   ########.fr       */
+/*   Updated: 2019/02/03 17:38:56 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	skip(int fd, t_opt *opt, int *total)
+int	skip(char **res, int res_len, t_opt *opt)
 {
-	(void)fd;
 	(void)opt;
-	(void)total;
+	(void)res;
+	return(res_len);
 }

@@ -6,26 +6,43 @@
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 20:05:38 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/01/29 23:32:22 by gstiedem         ###   ########.fr       */
+/*   Updated: 2019/02/07 20:37:58 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	ft_putchar(int fd, t_opt *opt, int *total)
+void static	padding(t_opt *opt, char **res)
 {
-	if (opt->width && !opt->flags.minus)
-	{
-		while (--opt->width)
-			(write(fd, " ", 1) != -1) ? (*total)++ : (*total = -1);
-	}
+	int		pad;
+	char	c;
+	char	*tmp;
+
+	pad = opt->width - 1;
+	tmp = *res;
+	if (pad < 1)
+		return ;
+	opt->flags.minus ? tmp = tmp + 1 : (tmp = (*res));
+	opt->flags.zero ? (c = '0') : (c = ' ');
+	opt->flags.minus ? 0 : (*res += pad);
+	while (pad-- > 0)
+		*tmp++ = c;
+}
+
+int			ft_putchar(char **res, int res_len, t_opt *opt)
+{
+	int		len;
+	int		width;
+	char	*tmp;
+
+	width = opt->width;
+	width > 1 ? (len = width) : (len = 1);
+	len = ft_strncat(res, 0, res_len, len);
+	tmp = (*res) + res_len;
+	padding(opt, &tmp);
 	if (opt->type == '%')
-		(write(fd, "%", 1) != -1) ? (*total)++ : (*total = -1);
+		*tmp++ = '%';
 	else
-		(write(fd, &(opt->arg), 1) != -1) ? (*total)++ : (*total = -1);
-	if (opt->width && opt->flags.minus)
-	{
-		while (--opt->width)
-			(write(fd, " ", 1) != -1) ? (*total)++ : (*total = -1);
-	}
+		*tmp++ = opt->arg;
+	return (len);
 }
