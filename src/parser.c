@@ -6,7 +6,7 @@
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/24 00:07:10 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/02/08 23:19:24 by gstiedem         ###   ########.fr       */
+/*   Updated: 2019/02/10 17:23:57 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	get_parameter(char **format, t_opt *opt)
 	char	*s;
 
 	s = *format;
-	place = 0.0;
+	place = 0;
 	while (*s > '0' && *s <= '9')
 	{
 		place *= 10;
@@ -35,8 +35,8 @@ void	get_flags(char **format, t_opt *opt)
 {
 	char	*s;
 
-	s = *format;
-	while (*s == '-' || *s == '0' || *s == '+' || *s == ' ' || *s == '#')
+	s = (*format) - 1;
+	while (*++s)
 	{
 		if (*s == '-')
 			opt->flags.minus = 1;
@@ -48,7 +48,8 @@ void	get_flags(char **format, t_opt *opt)
 			opt->flags.space = 1;
 		else if (*s == '#')
 			opt->flags.hash = 1;
-		s++;
+		else
+			break ;
 	}
 	opt->flags.minus ? opt->flags.zero = 0 : 0;
 	opt->flags.plus ? opt->flags.space = 0 : 0;
@@ -61,7 +62,7 @@ void	get_width(char **format, t_opt *opt, va_list ap)
 	int		width;
 
 	s = *format;
-	width = 0.0;
+	width = 0;
 	while ((*s >= '0' && *s <= '9') || *s == '*')
 	{
 		if (*s == '*')
@@ -98,7 +99,7 @@ void	get_precision(char **format, t_opt *opt, va_list ap)
 		(*format) += 2;
 		return ;
 	}
-	precision = 0.0;
+	precision = 0;
 	while (*s >= '0' && *s <= '9')
 	{
 		precision *= 10;
@@ -113,9 +114,8 @@ int		parser(char **format, t_opt *opt, va_list ap)
 	char	*copy;
 	int		i;
 
-	(*format)++;
 	ft_bzero(opt, sizeof(*opt));
-	copy = *format;
+	copy = ++(*format);
 	get_parameter(&copy, opt);
 	get_flags(&copy, opt);
 	get_width(&copy, opt, ap);

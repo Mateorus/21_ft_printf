@@ -6,7 +6,7 @@
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/29 20:27:15 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/02/08 23:25:12 by gstiedem         ###   ########.fr       */
+/*   Updated: 2019/02/10 23:28:40 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,30 @@
 
 static void	itoa(char *buf, t_opt *opt)
 {
-	int			i;
-	uintmax_t	tmp;
-	uintmax_t	num;
+	size_t	size;
+	uint8_t	*byte;
+	uint8_t	i;
+	char	*copy;
 
-	num = opt->arg;
-	!num ? buf[0] = '0' : 0;
-	!num && !opt->precision ? buf[0] = 0 : 0;
+	copy = buf;
+	opt->arg ? (size = sizeof(opt->arg)) : (size = sizeof(opt->float_arg));
+	opt->arg ? (byte = (uint8_t*)&opt->arg) : (byte = (uint8_t*)&opt->float_arg);
+	buf[size * 8] = 0;
 	i = 1;
-	tmp = num;
-	while (tmp >>= 1)
-		i++;
-	buf[i] = 0;
-	while (num)
+	while (size--)
 	{
-		tmp  = 0x1 & num;
-		tmp = tmp + '0';
-		buf[--i] = tmp;
-		num >>= 1;
+		buf[0] = (((*byte) >> 7) & 0x1) + '0';
+		buf[1] = (((*byte) >> 6) & 0x1) + '0';
+		buf[2] = (((*byte) >> 5) & 0x1) + '0';
+		buf[3] = (((*byte) >> 4) & 0x1) + '0';
+		buf[4] = (((*byte) >> 3) & 0x1) + '0';
+		buf[5] = (((*byte) >> 2) & 0x1) + '0';
+		buf[6] = (((*byte) >> 1) & 0x1) + '0';
+		buf[7] = ((*byte++) & 0x1) + '0';
+		(int)(((char*)&i)[0]) ? ft_revstr(buf, 8) : 0;
+		buf += 8;
 	}
+	(int)(((char*)&i)[0]) ? ft_revstr(copy, ft_strlen(copy)) : 0;
 }
 
 static void sufix(t_opt *opt, char **res)
@@ -84,7 +89,10 @@ int			ft_putnbr_base2(char **res, int res_len, t_opt *opt)
 	char		buf[BUF];
 
 	itoa(buf, opt);
-	nlen = ft_strlen(buf);
+	if (opt->flags.hash)
+		nlen = ft_strlen(ft_strchr(buf, '1'));
+	else
+		nlen = ft_strlen(buf);
 	opt->precision != -1 ? (opt->flags.zero = 0) : 0;
 	opt->precision > nlen && nlen ? (slen = opt->precision) : (slen = nlen);
 	(opt->flags.hash && opt->arg) || opt->type == 'p' ? (slen += 2) : 0;
@@ -93,6 +101,7 @@ int			ft_putnbr_base2(char **res, int res_len, t_opt *opt)
 	tmp = (*res) + res_len;
 	padding(opt, &tmp, slen);
 	prepend(opt, &tmp, nlen);
-	ft_strncpy(tmp, buf, nlen);
+	opt->flags.hash ? ft_strncpy(tmp, ft_strchr(buf, '1'), nlen) :
+		ft_strncpy(tmp, buf, nlen);
 	return (len);
 }

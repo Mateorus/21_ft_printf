@@ -1,26 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_fprintf.c                                       :+:      :+:    :+:   */
+/*   ft_revstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/06 17:15:34 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/02/06 17:40:04 by gstiedem         ###   ########.fr       */
+/*   Created: 2019/02/10 20:37:09 by gstiedem          #+#    #+#             */
+/*   Updated: 2019/02/10 21:27:03 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_fprintf(int fd, const char *format, ...)
+void	ft_revstr(char *s, size_t len)
 {
-	va_list		ap;
-	int			total;
+	int		i;
+	int		mid;
+	char	tmp;
 
-	if (!format)
-		return (-1);
-	va_start(ap, format);
-	total = ft_vfprintf(fd, (char*)format, ap);
-	va_end(ap);
-	return (total);
+	i = 0;
+	mid = len / 2;
+	len--;
+	while (i < mid)
+	{
+		tmp = s[i];
+		s[i] = s[len];
+		s[len] = tmp;
+		i++;
+		len--;
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 17:04:08 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/02/07 15:31:16 by gstiedem         ###   ########.fr       */
+/*   Updated: 2019/02/09 15:05:32 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int			ft_putstr(char **res, int res_len, t_opt *opt)
 
 	s = "(null)";
 	if (!opt->arg)
-		opt->arg = (uintmax_t)s;
+		opt->arg = (intmax_t)s;
 	s = (char*)opt->arg;
 	slen = ft_strlen(s);
 	(opt->precision >= 0 && opt->precision < slen) ? (slen = opt->precision) : 0;

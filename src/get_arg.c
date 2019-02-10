@@ -6,7 +6,7 @@
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 14:28:35 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/02/08 23:46:06 by gstiedem         ###   ########.fr       */
+/*   Updated: 2019/02/10 19:09:38 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,37 +39,30 @@ void	get_length(char **format, t_opt *opt)
 	(*format)++;
 }
 
-
-void	cast_to_u(t_opt *opt)
-{
-	if (opt->type == 's')
-	{
-		opt->arg = (uintmax_t)opt->arg;
-		return ;
-	}
-	if (opt->type == 'p')
-	{
-		opt->flags.hash = 1;
-		opt->arg = (uintmax_t)opt->arg;
-		return ;
-	}
-	opt->length == 0 ? opt->arg = (unsigned int)opt->arg : 0;
-	opt->length == 1 ? opt->arg = (unsigned char)opt->arg : 0;
-	opt->length == 2 ? opt->arg = (unsigned short)opt->arg : 0;
-	opt->length == 3 ? opt->arg = (unsigned long long)opt->arg : 0;
-	opt->length == 4 ? opt->arg = (unsigned long)opt->arg : 0;
-	opt->length == 6 ? opt->arg = (size_t)opt->arg : 0;
-	opt->length == 7 ? opt->arg = (uintmax_t)opt->arg : 0;
-}
-
 void	cast_to(t_opt *opt)
 {
+	char	t;
+
+	t = opt->type;
+	t == 'p' ? opt->flags.hash = 1 : 0;
+	if (t == 'b' || t == 's' || t == 'p')
+		return ;
+	if (t == 'x' || t == 'X' || t == 'o' || t == 'O' || t == 'u' || t == 'U')
+	{
+		opt->length == 0 ? opt->arg = (unsigned int)opt->arg : 0;
+		opt->length == 1 ? opt->arg = (unsigned char)opt->arg : 0;
+		opt->length == 2 ? opt->arg = (unsigned short)opt->arg : 0;
+		opt->length == 3 ? opt->arg = (unsigned long long)opt->arg : 0;
+		opt->length == 4 ? opt->arg = (unsigned long)opt->arg : 0;
+		opt->length == 6 ? opt->arg = (size_t)opt->arg : 0;
+		opt->length == 7 ? opt->arg = (uintmax_t)opt->arg : 0;
+		return ;
+	}
 	opt->length == 0 ? opt->arg = (int)opt->arg : 0;
 	opt->length == 1 ? opt->arg = (char)opt->arg : 0;
 	opt->length == 2 ? opt->arg = (short)opt->arg : 0;
 	opt->length == 3 ? opt->arg = (long long)opt->arg : 0;
 	opt->length == 4 ? opt->arg = (long)opt->arg : 0;
-	opt->length == 5 ? opt->arg = (long double)opt->arg : 0;
 	opt->length == 6 ? opt->arg = (size_t)opt->arg : 0;
 	opt->length == 7 ? opt->arg = (intmax_t)opt->arg : 0;
 }
@@ -88,13 +81,9 @@ int		pick_func(t_opt *opt)
 	type == 'x' || type == 'X' || type == 'p' ? i = 5 : 0;
 	type == 'o' || type == 'O' ? i = 6 : 0;
 	type == 'b' ? i = 7 : 0;
-	if (type == 'U' || type == 'D' || type == 'O' || type == 'p' || type == 'F')
+	if (type == 'U' || type == 'D' || type == 'O')
 		opt->length = 4;
-	if (type == 'x' || type == 'X' || type == 'o' || type == 'O' || type == 'u'
-		|| type == 'p' || type == 's')
-		cast_to_u(opt);
-	else
-		cast_to(opt);
+	cast_to(opt);
 	return (i);
 }
 
@@ -102,19 +91,23 @@ int		get_arg(char **format, t_opt *opt, va_list ap)
 {
 	va_list	ap_copy;
 	int		parameter;
+	int		func;
 
 	get_length(format, opt);
 	opt->type = **format;
 	(*format)++;
 	parameter = opt->parameter;
-	if (parameter != 0)
+	va_copy(ap_copy, ap);
+	opt->arg = va_arg(ap_copy, intmax_t);
+	func = pick_func(opt);
+	if (!func || opt->type == '%')
 	{
-		va_copy(ap_copy, ap);
-		while (parameter--)
-			opt->arg = va_arg(ap_copy, intmax_t);
 		va_end(ap_copy);
+		return (func);
 	}
-	else
-		opt->arg = va_arg(ap, intmax_t);
-	return (pick_func(opt));
+	while (--parameter > 0)
+		opt->arg = va_arg(ap_copy, intmax_t);
+	va_arg(ap, intmax_t);
+	va_end(ap_copy);
+	return (func);
 }

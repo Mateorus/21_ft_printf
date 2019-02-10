@@ -6,7 +6,7 @@
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 19:43:11 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/02/08 23:23:30 by gstiedem         ###   ########.fr       */
+/*   Updated: 2019/02/10 21:28:35 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 
 # define NUM_OF_TYPES	22
 # define NUM_OF_FUNC	8
-# define BUF			65
+# define BUF			129
 
 /*
 * *_______________________________TYPES___________________________________
@@ -44,6 +44,8 @@ typedef struct		s_opt
 	uint8_t			length;
 	char			type;
 	intmax_t		arg;
+	long	double	float_arg;
+
 }					t_opt;
 typedef int			(*t_fp)(char**, int, t_opt*);
 
@@ -51,7 +53,7 @@ typedef int			(*t_fp)(char**, int, t_opt*);
 * *_______________________________SRC___________________________________
 */
 int					ft_printf(const char *format, ...);
-int					ft_fprintf(int fd, const char *format, ...);
+int					ft_dprintf(int fd, const char *format, ...);
 int					ft_vfprintf(int fd, char *format, va_list ap);
 int					parser(char **format, t_opt *opt, va_list ap);
 int					get_arg(char **format, t_opt *opt, va_list ap);
@@ -72,5 +74,6 @@ size_t				ft_strlen(const char *s);
 char				*ft_strchr(char *s, char c);
 void				ft_strncpy(char *dst, char *src, int n);
 void				ft_bzero(void *s, size_t n);
+void				ft_revstr(char *s, size_t len);
 
 #endif

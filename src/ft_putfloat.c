@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr.c                                        :+:      :+:    :+:   */
+/*   ft_putfloat.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/27 18:32:46 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/02/10 17:29:25 by gstiedem         ###   ########.fr       */
+/*   Created: 2019/02/09 00:40:09 by gstiedem          #+#    #+#             */
+/*   Updated: 2019/02/10 16:11:48 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ static void	prepend(t_opt *opt, char **res, int nlen)
 		*(*res)++ = '0';
 }
 
-int			ft_putnbr(char **res, int res_len, t_opt *opt)
+int			ft_putfloat(char **res, int res_len, t_opt *opt)
 {
 	int		len;
 	int		nlen;
@@ -90,8 +90,8 @@ int			ft_putnbr(char **res, int res_len, t_opt *opt)
 	itoa(buf, opt->arg, opt->precision);
 	nlen = ft_strlen(buf);
 	opt->precision != -1 ? opt->flags.zero = 0 : 0;
-	opt->precision > nlen && nlen ? (slen = opt->precision) : (slen = nlen);
-	opt->flags.space || opt->flags.plus || opt->arg < 0 ? slen++ : 0;
+	(opt->precision > nlen && nlen) ? (slen = opt->precision) : (slen = nlen);
+	(opt->flags.space || opt->flags.plus || opt->arg < 0) ? slen++ : 0;
 	opt->width > slen ? (len = opt->width) : (len = slen);
 	len = ft_strncat(res, 0, res_len, len);
 	tmp = (*res) + res_len;
