@@ -6,7 +6,7 @@
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 14:28:35 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/02/10 19:09:38 by gstiedem         ###   ########.fr       */
+/*   Updated: 2019/02/15 00:23:54 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ int		pick_func(t_opt *opt)
 	char	type;
 
 	i = 0;
+	if (opt->type == 'e' || opt->type == 'f' || opt->type == 'g')
+		return (8);
 	type = opt->type;
 	type == '%' || type == 'c' ? i = 1 : 0;
 	type == 's' ? i = 2 : 0;
@@ -83,31 +85,27 @@ int		pick_func(t_opt *opt)
 	type == 'b' ? i = 7 : 0;
 	if (type == 'U' || type == 'D' || type == 'O')
 		opt->length = 4;
-	cast_to(opt);
 	return (i);
 }
 
 int		get_arg(char **format, t_opt *opt, va_list ap)
 {
-	va_list	ap_copy;
-	int		parameter;
 	int		func;
 
 	get_length(format, opt);
-	opt->type = **format;
-	(*format)++;
-	parameter = opt->parameter;
-	va_copy(ap_copy, ap);
-	opt->arg = va_arg(ap_copy, intmax_t);
+	opt->type = *(*format)++;
 	func = pick_func(opt);
-	if (!func || opt->type == '%')
+	if (func == 8 || (func == 7 && (opt->length == 4 || opt->length == 5)))
 	{
-		va_end(ap_copy);
+		if (opt->length == 5)
+			opt->float_arg = va_arg(ap, long double);
+		else
+			opt->float_arg = va_arg(ap, double);
 		return (func);
 	}
-	while (--parameter > 0)
-		opt->arg = va_arg(ap_copy, intmax_t);
-	va_arg(ap, intmax_t);
-	va_end(ap_copy);
+	if (!func || opt->type == '%')
+		return (func);
+	opt->arg = va_arg(ap, intmax_t);
+	cast_to(opt);
 	return (func);
 }

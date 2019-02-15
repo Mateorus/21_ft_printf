@@ -6,37 +6,14 @@
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 00:40:09 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/02/10 16:11:48 by gstiedem         ###   ########.fr       */
+/*   Updated: 2019/02/15 16:08:14 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static void	itoa(char *buf, intmax_t num, int precision)
+static void	itoa(char *buf, long double num, int precision)
 {
-	intmax_t	tmp;
-	int			i;
-
-	!num ? buf[0] = '0' : 0;
-	!num && !precision ? buf[0] = 0 : 0;
-	i = 1;
-	tmp = num;
-	while (tmp /= 10)
-		i++;
-	buf[i] = 0;
-	tmp = num;
-	if ((uintmax_t)tmp == -9223372036854775808U)
-	{
-		buf[--i] = '8';
-		tmp /= 10;
-	}
-	if (tmp < 0)
-		tmp *= -1;
-	while (tmp)
-	{
-		buf[--i] = tmp % 10 + '0';
-		tmp /= 10;
-	}
 }
 
 static void	padding(t_opt *opt, char **res, int slen)

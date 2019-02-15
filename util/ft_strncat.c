@@ -6,7 +6,7 @@
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/01 14:21:58 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/02/06 17:43:34 by gstiedem         ###   ########.fr       */
+/*   Updated: 2019/02/14 23:26:32 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	ft_strncat(char **s1, char *s2, size_t len1, size_t len2)
 	}
 	ft_strncpy(tmp, *s1, len1);
 	ft_strncpy(tmp + len1, s2, len2);
+	tmp[total_len] = 0;
 	free(*s1);
 	*s1 = tmp;
 	return (total_len);
