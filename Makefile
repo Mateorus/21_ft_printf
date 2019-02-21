@@ -6,7 +6,7 @@
 #    By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/17 19:13:48 by gstiedem          #+#    #+#              #
-#    Updated: 2019/02/15 00:56:58 by gstiedem         ###   ########.fr        #
+#    Updated: 2019/02/18 12:52:21 by gstiedem         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,8 @@ SRC:=$(addprefix $(SRCDIR)/,\
 	skip.c ft_putstr.c ft_putnbr.c ft_putnbr_base16.c ft_putunbr.c\
 	ft_putnbr_base8.c ft_putnbr_base2.c ft_putfloat.c)
 UTIL=$(addprefix $(UTILDIR)/,\
-	ft_bzero.c ft_strlen.c ft_strchr.c ft_strncat.c ft_strncpy.c ft_revstr.c)
+	ft_bzero.c ft_strlen.c ft_strchr.c ft_strncat.c ft_strncpy.c ft_revstr.c\
+	ft_ftoa.c)
 OBJ:=$(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRC))
 OBJ:=$(OBJ) $(patsubst $(UTILDIR)/%.c, $(OBJDIR)/%.o, $(UTIL))
 CC:=gcc

@@ -6,7 +6,7 @@
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 19:43:11 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/02/15 00:57:18 by gstiedem         ###   ########.fr       */
+/*   Updated: 2019/02/21 13:06:20 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,5 +74,6 @@ char			*ft_strchr(char *s, char c);
 void			ft_strncpy(char *dst, char *src, int n);
 void			ft_bzero(void *s, size_t n);
 void			ft_revstr(char *s, size_t len);
+void			ft_ftoa(t_opt *opt, char **s);
 
 #endif

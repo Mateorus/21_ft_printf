@@ -6,15 +6,11 @@
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 00:40:09 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/02/15 16:08:14 by gstiedem         ###   ########.fr       */
+/*   Updated: 2019/02/21 14:43:22 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-
-static void	itoa(char *buf, long double num, int precision)
-{
-}
 
 static void	padding(t_opt *opt, char **res, int slen)
 {
@@ -62,9 +58,10 @@ int			ft_putfloat(char **res, int res_len, t_opt *opt)
 	int		nlen;
 	int		slen;
 	char	*tmp;
-	char	buf[BUF];
+	char	*buf;
 
-	itoa(buf, opt->arg, opt->precision);
+	ft_ftoa(opt, &buf);
+	/* *buf == '0' ? buf++ : 0; */
 	nlen = ft_strlen(buf);
 	opt->precision != -1 ? opt->flags.zero = 0 : 0;
 	(opt->precision > nlen && nlen) ? (slen = opt->precision) : (slen = nlen);
@@ -75,5 +72,6 @@ int			ft_putfloat(char **res, int res_len, t_opt *opt)
 	padding(opt, &tmp, slen);
 	prepend(opt, &tmp, nlen);
 	ft_strncpy(tmp, buf, nlen);
+	free(buf);
 	return (len);
 }
