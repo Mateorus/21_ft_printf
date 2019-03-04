@@ -6,21 +6,19 @@
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 19:43:11 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/02/21 13:06:20 by gstiedem         ###   ########.fr       */
+/*   Updated: 2019/03/04 20:12:34 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
 
-// DELETE!!!!! stdio.h !!!!!!
-# include <stdio.h>
-
 # include <stdarg.h>
 # include <unistd.h>
 # include <stdlib.h>
 
 # define BUF			129
+# define LD_BIAS		16383
 
 /*
 * *_______________________________TYPES___________________________________
@@ -43,8 +41,12 @@ typedef struct	s_opt
 	char		type;
 	intmax_t	arg;
 	long double	float_arg;
-
 }				t_opt;
+typedef struct	s_float
+{
+	char		*whole;
+	char		*frac;
+}				t_float;
 typedef int		(*t_fp)(char**, int, t_opt*);
 
 /*
@@ -59,7 +61,7 @@ int				skip(char **res, int res_len, t_opt *opt);
 int				ft_putchar(char **res, int res_len, t_opt *opt);
 int				ft_putstr(char **res, int res_len, t_opt *opt);
 int				ft_putnbr(char **res, int res_len, t_opt *opt);
-int				ft_putunbr(char ** res, int res_len, t_opt *opt);
+int				ft_putunbr(char **res, int res_len, t_opt *opt);
 int				ft_putnbr_base16(char **res, int res_len, t_opt *opt);
 int				ft_putnbr_base8(char **res, int res_len, t_opt *opt);
 int				ft_putnbr_base2(char **res, int res_len, t_opt *opt);
@@ -75,5 +77,9 @@ void			ft_strncpy(char *dst, char *src, int n);
 void			ft_bzero(void *s, size_t n);
 void			ft_revstr(char *s, size_t len);
 void			ft_ftoa(t_opt *opt, char **s);
+void			ft_strcpy(char *dst, char *src);
+void			get_whole_part(int exp, uint64_t *mantisa, char **buf);
+void			get_frac_part(int exp, uint64_t *mantisa, char **buf);
+void			assert(void *i);
 
 #endif

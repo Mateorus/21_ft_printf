@@ -6,22 +6,19 @@
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/17 22:27:15 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/02/21 15:29:31 by gstiedem         ###   ########.fr       */
+/*   Updated: 2019/03/04 18:30:35 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <math.h>
 #include "ft_printf.h"
 
 int	main(void)
 {
-	char		c = 0;
-	char		s[] = "123456789";
-	long		i = -3;
-	long double		f = 1.8e+400L;
-	long double	lf = 1.123456;
+	double		f = -0.5;
 	int			total;
 	int			total_o;
-	char		*format = "%.25Lf";
+	char		*format = "%.2000f";
 
 	total = ft_printf(format, f);
 	write(1, "\n", 1);

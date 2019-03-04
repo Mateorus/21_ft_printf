@@ -6,145 +6,132 @@
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 17:02:50 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/02/21 15:33:24 by gstiedem         ###   ########.fr       */
+/*   Updated: 2019/03/04 20:06:55 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-//DELETE!!!!
-#include <math.h>
-#include <string.h>
+
 #include "ft_printf.h"
 
-int		special_value(long double n, char *s)
+static int	special_value(long double n, char *s, int precision)
 {
-	uint64_t	frac;
-	uint16_t	exp;
-	uint64_t	*value;
+	int			exp;
+	uint64_t	mantisa;
 
-	value = (uint64_t*)&n;
-	frac = *value;
-	exp = *(value + 1) | 0x8000;
-	if (exp == 0xffff)
+	exp = (*((uint64_t*)&n + 1) & 0x7fff);
+	mantisa = *(uint64_t*)&n;
+	if (exp == 0x7fff)
 	{
-		if (frac == 0xffffffffffffffff)
+		if (mantisa >> 62 == 3)
 			ft_strncpy(s, "nan\0", 4);
 		else
 			ft_strncpy(s, "inf\0", 4);
 		return (1);
 	}
-	if (n == 0.0)
+	if (!mantisa && !exp)
 	{
-		ft_strncpy(s, "0\0", 2);
+		*s++ = '0';
+		if (precision)
+			*s++ = '.';
+		while (precision--)
+			*s++ = '0';
+		*s = 0;
 		return (1);
 	}
 	return (0);
 }
 
-void	ft_round(char *s)
+static void	round(t_float *num, int len)
 {
-	int	len;
+	char	*s;
 
-	len = ft_strchr(s, '.') - s;
-	len += 19;
+	s = num->frac;
+	if (len >= ft_strlen(s))
+		return ;
 	if (s[len] >= '5')
+		s[--len]++;
+	while (s[len] > '9')
 	{
-		if (s[--len] == '.')
-			len--;
-		s[len]++;
-		while (len > 0)
-		{
-			if (s[len] == '.')
-				len--;
-			if (s[len] > '9')
-			{
-				s[len] = '0';
-				s[len - 1]++;
-			}
-			len--;
-		}
+		s[len] = '0';
+		if (len == 0)
+			s = ft_strchr(num->whole, 0);
+		s[--len]++;
 	}
 }
 
-void	float_engine(long double n, int precision, int m, char *s)
+static void	double_dabble(long double n, t_float *num, int precision)
 {
-	int			digit;
-	long double weight;
-	long double tmp;
+	int			exp;
+	int			i;
+	uint64_t	mantisa;
 
-	if (n < 0.0)
-		n = -n;
-	*s++ = '0';
-	while (precision) 
+	exp = (*((uint64_t*)&n + 1) & 0x7fff);
+	mantisa = *(uint64_t*)&n;
+ 	exp = !exp ? 1 - LD_BIAS : exp - LD_BIAS;
+	get_whole_part(exp, &mantisa, &num->whole);
+	get_frac_part(exp, &mantisa, &num->frac);
+	if (!num->whole)
 	{
-		weight = pow(10.0, m);
-		m == -1 ? weight -= 0.000000000000000005551L : 0;
-		digit = floor(n / weight);
-		tmp = (digit * weight);
-		n -= tmp;
-		*s++ = '0' + digit;
-		if (m-- == 0)
-			*s++ = '.';
-		m < -1 ? precision-- : 0;
+		assert((num->whole = malloc(sizeof(*num->frac) * 2)));
+		ft_strncpy(num->whole, "0\0", 2);
 	}
-	*s = 0;
+	if (!num->frac)
+	{
+		assert((num->frac = malloc(sizeof(*num->frac) * (precision + 1))));
+		i = 0;
+		while (precision--)
+			num->frac[i++] = '0';
+		num->frac[i] = 0;
+	}
 }
 
-void	ft_ftoa(t_opt *opt, char **buf)
+static void	write_to_buf(t_float *num, char **buf, int precision)
+{
+	int			wh_len;
+	int			fr_len;
+	int			tl_len;
+	char		*tmp;
+	
+	tmp = num->whole;
+	while (*tmp == '0' && *(tmp + 1))
+		tmp++;
+	wh_len = ft_strlen(tmp);
+	fr_len = ft_strlen(num->frac);
+	tl_len = precision > fr_len ? precision + wh_len : fr_len + wh_len;
+	*buf = malloc(sizeof(**buf) * (tl_len + 1 + 1));
+	ft_strcpy(*buf, tmp);
+	if (precision)
+	{
+		(*buf)[wh_len] = '.';
+		if (precision > fr_len)
+		{
+			ft_strncpy((*buf) + wh_len + 1, num->frac, fr_len);
+			precision -= fr_len;
+			tmp = (*buf) + fr_len + wh_len + 1;
+			while (precision--)
+				*tmp++ = '0';
+		}
+		else
+			ft_strncpy((*buf) + wh_len + 1, num->frac, precision);
+		(*buf)[tl_len + 1] = 0;
+	}
+	else
+		(*buf)[wh_len] = 0;
+}
+
+void		ft_ftoa(t_opt *opt, char **buf)
 {
 	int			precision;
-	int			mag;
-	long double	n;
+	t_float		num;
 
-	n = opt->float_arg;
-	mag = log10l(n);
-	mag < 0 ? mag = 0 : 0;
-	precision = opt->precision == -1 ? 19 : opt->precision + 1;
-	*buf = malloc(sizeof(**buf) * (mag + 1 + precision + 2));
-	if (special_value(n, *buf))
+	precision = opt->precision == -1 ? 6 : opt->precision;
+	precision = opt->type == 'g' && !precision ? 1 : precision;
+	if (special_value(opt->float_arg, *buf, precision)) 
 		return ;
-	float_engine(n, precision, mag, *buf);
-	ft_round(*buf);
+	num.whole = NULL;
+	num.frac = NULL;
+	double_dabble(opt->float_arg, &num, precision);
+	round(&num, precision);
+	write_to_buf(&num, buf, precision);
+	free(num.whole);
+	free(num.frac);
 }
-        /* int useExp = (m >= 14 || (neg && m >= 9) || m <= -9); */
-        // set up for scientific notation
-        /* if (useExp) { */
-        /*     if (m < 0) */
-        /*        m -= 1.0; */
-        /*     n = n / pow(10.0, m); */
-        /*     m1 = m; */
-        /*     m = 0; */
-        /* } */
-		/* while (n > 0 && PRECISION) */
-		/* { */
-		/* 	n = n / pow(10, m); */
-		/* 	digit = (int)n; */
-		/* 	n = (n - digit) * pow(10, m--); */
-            /* *(c++) = '0' + digit; */
-            /* if (m == -1) */
-                /* *(c++) = '.'; */
-		/* 	PRECISION--; */
-		/* } */
-        /* if (useExp) { */
-        /*     // convert the exponent */
-        /*     int i, j; */
-        /*     *(c++) = 'e'; */
-        /*     if (m1 > 0) { */
-        /*         *(c++) = '+'; */
-        /*     } else { */
-        /*         *(c++) = '-'; */
-        /*         m1 = -m1; */
-        /*     } */
-        /*     m = 0; */
-        /*     while (m1 > 0) { */
-        /*         *(c++) = '0' + m1 % 10; */
-        /*         m1 /= 10; */
-        /*         m++; */
-        /*     } */
-        /*     c -= m; */
-        /*     for (i = 0, j = m-1; i<j; i++, j--) { */
-        /*         // swap without temporary */
-        /*         c[i] ^= c[j]; */
-        /*         c[j] ^= c[i]; */
-        /*         c[i] ^= c[j]; */
-        /*     } */
-        /*     c += m; */
-        /* } */
