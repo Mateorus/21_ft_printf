@@ -6,7 +6,7 @@
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/03 13:30:43 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/03/04 16:09:48 by gstiedem         ###   ########.fr       */
+/*   Updated: 2019/03/05 17:00:17 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,22 +85,22 @@ static void	write_to_buf(uint64_t *end, size_t size, char *buf)
 	*buf = 0;
 }
 
-static void	extract_whole_part(int exp, uint64_t *mantisa, uint64_t *limb)
+static void	extract_whole_part(int *exp, uint64_t *mantisa, uint64_t *limb)
 {
 	int			pos;
 	uint64_t	tmp;
 
-	while (exp >= 0 && *mantisa)
+	while (*exp >= 0 && *mantisa)
 	{
-		pos = exp / 64;
-		tmp = *mantisa & 0x8000000000000000 ? 1ULL << (exp % 64) : 0;
+		pos = *exp / 64;
+		tmp = *mantisa & 0x8000000000000000 ? 1ULL << (*exp % 64) : 0;
 		*mantisa <<= 1;
 		limb[pos] += tmp;
-		exp--;
+		(*exp)--;
 	}
 }
 
-void	get_whole_part(int exp, uint64_t *mantisa, char **buf)
+void	get_whole_part(int *exp, uint64_t *mantisa, char **buf)
 {
 	size_t		reg_size;
 	size_t		total_size;
@@ -108,9 +108,9 @@ void	get_whole_part(int exp, uint64_t *mantisa, char **buf)
 	uint64_t	steps;
 	uint64_t	*limb;
 
-	if (exp < 0)
+	if (*exp < 0)
 		return ;
-	reg_size = exp / 64 + 1;
+	reg_size = *exp / 64 + 1;
 	steps = reg_size << 6;
 	total_size = reg_size + (4 * (steps / 3.0 + 1) / 64) + 1;
 	assert((limb = malloc(sizeof(*limb) * total_size)));

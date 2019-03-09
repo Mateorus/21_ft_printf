@@ -6,7 +6,7 @@
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/17 22:27:15 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/03/04 18:30:35 by gstiedem         ###   ########.fr       */
+/*   Updated: 2019/03/10 00:46:35 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 
 int	main(void)
 {
-	double		f = -0.5;
+	long double		f = 1L;
 	int			total;
 	int			total_o;
-	char		*format = "%.2000f";
+	char		*format = "%+.f\n";
 
 	total = ft_printf(format, f);
 	write(1, "\n", 1);

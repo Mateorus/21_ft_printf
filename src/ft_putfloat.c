@@ -6,7 +6,7 @@
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/09 00:40:09 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/03/04 20:01:27 by gstiedem         ###   ########.fr       */
+/*   Updated: 2019/03/05 10:37:42 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,8 @@ static void	padding(t_opt *opt, char **res, int slen)
 		*tmp++ = c;
 }
 
-static void	prepend(t_opt *opt, char **res, int nlen)
+static void	prepend(t_opt *opt, char **res)
 {
-	int		dif;
 	int		sign;
 
 	sign = (*((uint64_t*)&opt->float_arg + 1) & 0x8000);
@@ -65,7 +64,7 @@ int			ft_putfloat(char **res, int res_len, t_opt *opt)
 	len = ft_strncat(res, 0, res_len, len);
 	tmp = (*res) + res_len;
 	padding(opt, &tmp, slen);
-	prepend(opt, &tmp, nlen);
+	prepend(opt, &tmp);
 	ft_strncpy(tmp, buf, nlen);
 	free(buf);
 	return (len);
