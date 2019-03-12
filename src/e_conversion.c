@@ -6,7 +6,7 @@
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/09 22:56:22 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/03/12 11:45:31 by gstiedem         ###   ########.fr       */
+/*   Updated: 2019/03/12 14:17:43 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int			get_exp(t_float *num)
 		exp++;
 	if (exp == -1)
 	{
-		if (!*tmp)
+		if (!*--tmp)
 			return (0);
 		tmp = num->frac;
 		while (*tmp++ == '0')
@@ -91,7 +91,7 @@ static void	write_to_buf(char **buf, t_float *num, int precision, int exp)
 	
 	assert((*buf = malloc(sizeof(**buf) * (precision + 9))));
 	buf_tmp = *buf;
-	tmp = exp < 0 ? 0 : ft_strchr(num->whole, 0) - exp - 1;
+	tmp = exp < 0 ? ft_strchr(num->whole, 0) : ft_strchr(num->whole, 0) - exp - 1;
 	tmp2 = exp < 0 ? num->frac + -exp - 1 : num->frac;
 	*buf_tmp++ = *tmp ? *tmp++ : *tmp2++;
 	precision ? *buf_tmp++ = '.' : 0;

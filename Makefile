@@ -6,7 +6,7 @@
 #    By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/17 19:13:48 by gstiedem          #+#    #+#              #
-#    Updated: 2019/03/10 01:09:40 by gstiedem         ###   ########.fr        #
+#    Updated: 2019/03/12 14:00:03 by gstiedem         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,8 +17,8 @@ OBJDIR:=obj
 LIBDIR:=libft
 INCLUDE:=include
 SRC:=$(addprefix $(SRCDIR)/,\
-	ft_printf.c ft_dprintf.c ft_vfprintf.c ft_putchar.c parser.c get_arg.c\
-	skip.c ft_putstr.c ft_putnbr.c ft_putnbr_base16.c ft_putunbr.c\
+	ft_printf.c ft_dprintf.c ft_sprintf.c ft_vfprintf.c ft_putchar.c parser.c\
+	get_arg.c skip.c ft_putstr.c ft_putnbr.c ft_putnbr_base16.c ft_putunbr.c\
 	ft_putnbr_base8.c ft_putnbr_base2.c ft_putfloat.c ft_ftoa.c f_conversion.c\
 	e_conversion.c get_whole_part.c get_frac_part.c)
 UTIL=$(addprefix $(UTILDIR)/,\

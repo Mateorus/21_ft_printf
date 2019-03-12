@@ -6,7 +6,7 @@
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 19:43:11 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/03/09 23:20:57 by gstiedem         ###   ########.fr       */
+/*   Updated: 2019/03/12 14:01:12 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ typedef int		(*t_fp)(char**, int, t_opt*);
 */
 int				ft_printf(const char *format, ...);
 int				ft_dprintf(int fd, const char *format, ...);
-int				ft_vfprintf(int fd, char *format, va_list ap);
+int				ft_sprintf(char **s, const char *format, ...);
+int				ft_vfprintf(char **res, char *format, va_list ap);
 int				parser(char **format, t_opt *opt, va_list ap);
 int				get_arg(char **format, t_opt *opt, va_list ap);
 int				skip(char **res, int res_len, t_opt *opt);
@@ -68,6 +69,8 @@ int				ft_putnbr_base8(char **res, int res_len, t_opt *opt);
 int				ft_putnbr_base2(char **res, int res_len, t_opt *opt);
 int				ft_putfloat(char **res, int res_len, t_opt *opt);
 void			ft_ftoa(t_opt *opt, char **s);
+void			get_whole_part(int *exp, uint64_t *mantisa, char **buf);
+void			get_frac_part(int exp, uint64_t *mantisa, char **buf);
 void			f_conversion(t_float *num, t_opt *opt, char **buf);
 void			e_conversion(t_float *num, t_opt *opt, char **buf);
 
@@ -81,8 +84,6 @@ void			ft_strncpy(char *dst, char *src, int n);
 void			ft_bzero(void *s, size_t n);
 void			ft_revstr(char *s, size_t len);
 void			ft_strcpy(char *dst, char *src);
-void			get_whole_part(int *exp, uint64_t *mantisa, char **buf);
-void			get_frac_part(int exp, uint64_t *mantisa, char **buf);
 void			assert(void *i);
 
 #endif

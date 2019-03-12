@@ -1,30 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_sprintf.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/17 22:27:15 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/03/12 14:24:14 by gstiedem         ###   ########.fr       */
+/*   Created: 2019/03/12 13:57:09 by gstiedem          #+#    #+#             */
+/*   Updated: 2019/03/12 14:01:52 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <math.h>
 #include "ft_printf.h"
 
-int	main(void)
+int	ft_sprintf(char **s, const char *format, ...)
 {
-	long double		f = -0.0L;
-	int			total;
-	int			total_o;
-	char		*format = "%0+ 20.7p";
-	char		*s;
+	va_list	ap;
+	int		total;
+	char	*res;
 
-	total = ft_printf(format, &f);
-	write(1, "\n", 1);
-	total_o = printf(format, &f);
-	printf("\ntotal: %d\ntotal_o: %d\n", total, total_o);
-	ft_printf("%Lb", f);
-	return (0);
+	if (!format)
+		return (-1);
+	res = 0;
+	va_start(ap, format);
+	total = ft_vfprintf(&res, (char*)format, ap);
+	*s = res;
+	va_end(ap);
+	return (total);
 }
