@@ -6,7 +6,7 @@
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 14:28:35 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/03/09 17:38:13 by gstiedem         ###   ########.fr       */
+/*   Updated: 2019/03/11 12:02:22 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,6 @@ int		pick_func(t_opt *opt)
 	char	type;
 
 	i = 0;
-	if (opt->type == 'e' || opt->type == 'f')
-		return (8);
 	type = opt->type;
 	type == '%' || type == 'c' ? i = 1 : 0;
 	type == 's' ? i = 2 : 0;
@@ -83,6 +81,7 @@ int		pick_func(t_opt *opt)
 	type == 'x' || type == 'X' || type == 'p' ? i = 5 : 0;
 	type == 'o' || type == 'O' ? i = 6 : 0;
 	type == 'b' ? i = 7 : 0;
+	type == 'e' || type == 'f' ? i = 8 : 0;
 	if (type == 'U' || type == 'D' || type == 'O')
 		opt->length = 4;
 	return (i);

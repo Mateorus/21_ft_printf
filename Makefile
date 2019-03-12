@@ -6,7 +6,7 @@
 #    By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/17 19:13:48 by gstiedem          #+#    #+#              #
-#    Updated: 2019/03/09 23:22:06 by gstiedem         ###   ########.fr        #
+#    Updated: 2019/03/10 01:09:40 by gstiedem         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,10 +20,10 @@ SRC:=$(addprefix $(SRCDIR)/,\
 	ft_printf.c ft_dprintf.c ft_vfprintf.c ft_putchar.c parser.c get_arg.c\
 	skip.c ft_putstr.c ft_putnbr.c ft_putnbr_base16.c ft_putunbr.c\
 	ft_putnbr_base8.c ft_putnbr_base2.c ft_putfloat.c ft_ftoa.c f_conversion.c\
-	e_conversion.c)
+	e_conversion.c get_whole_part.c get_frac_part.c)
 UTIL=$(addprefix $(UTILDIR)/,\
 	ft_bzero.c ft_strlen.c ft_strchr.c ft_strncat.c ft_strncpy.c ft_revstr.c\
-	 ft_strcpy.c get_whole_part.c get_frac_part.c assert_malloc.c)
+	 ft_strcpy.c assert_malloc.c)
 OBJ:=$(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRC))
 OBJ:=$(OBJ) $(patsubst $(UTILDIR)/%.c, $(OBJDIR)/%.o, $(UTIL))
 CC:=gcc

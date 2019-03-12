@@ -6,7 +6,7 @@
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/09 22:39:02 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/03/10 00:55:10 by gstiedem         ###   ########.fr       */
+/*   Updated: 2019/03/10 15:10:50 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static void	round(t_float *num, int precision)
 	char	*tmp;
 
 	tmp = num->frac;
+	if (precision > (int)ft_strlen(tmp))
+		return ;
 	if (tmp[precision] >= '5')
 	{
 		!precision ? (tmp = ft_strchr(num->whole, 0)) : 0;
@@ -57,11 +59,8 @@ static void	write_to_buf(char **buf, t_float *num, int  precision)
 void		f_conversion(t_float *num, t_opt *opt, char **buf)
 {
 	int		precision;
-	int		frac_len;
 
 	precision = opt->precision == -1 ? 6 : opt->precision;
-	frac_len = ft_strlen(num->frac);
-	if (frac_len >= precision)
-		round(num, precision);
+	round(num, precision);
 	write_to_buf(buf, num, precision);
 }

@@ -6,7 +6,7 @@
 /*   By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 17:02:50 by gstiedem          #+#    #+#             */
-/*   Updated: 2019/03/09 23:32:31 by gstiedem         ###   ########.fr       */
+/*   Updated: 2019/03/10 14:03:03 by gstiedem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ static void	double_dabble(long double n, t_float *num)
 	}
 	if (!num->frac)
 	{
-		assert((num->frac = malloc(sizeof(*num->frac) * 2)));
-		ft_strncpy(num->frac, "0\0", 2);
+		assert((num->frac = malloc(sizeof(*num->frac))));
+		*num->frac = 0;
 	}
 }
 
