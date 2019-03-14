@@ -6,7 +6,7 @@
 #    By: gstiedem <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/17 19:13:48 by gstiedem          #+#    #+#              #
-#    Updated: 2019/03/12 14:00:03 by gstiedem         ###   ########.fr        #
+#    Updated: 2019/03/14 14:18:34 by gstiedem         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,6 @@ NAME:=libftprintf.a
 SRCDIR:=src
 UTILDIR=util
 OBJDIR:=obj
-LIBDIR:=libft
 INCLUDE:=include
 SRC:=$(addprefix $(SRCDIR)/,\
 	ft_printf.c ft_dprintf.c ft_sprintf.c ft_vfprintf.c ft_putchar.c parser.c\
